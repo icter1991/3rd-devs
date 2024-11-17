@@ -30,7 +30,7 @@ const allowedDomains = [
 Start Express server
 */
 const app = express();
-const port = 3000;
+const port = 4000;
 app.use(express.json());
 app.listen(port, () => console.log(`Server running at http://localhost:${port}. Listening for POST /api/chat requests`));
 
@@ -40,7 +40,7 @@ const openaiService = new OpenAIService();
 app.post('/api/chat', async (req, res) => {
   console.log('Received request');
   await fs.writeFile('prompt.md', '');
-  
+
   const { messages }: { messages: Message[] } = req.body;
 
   try {
@@ -50,7 +50,7 @@ app.post('/api/chat', async (req, res) => {
     }
 
     const shouldSearch = await webSearchService.isWebSearchNeeded(latestUserMessage.content as string);
-    let mergedResults: SearchResult[] = []; 
+    let mergedResults: SearchResult[] = [];
 
     if (shouldSearch) {
       const { queries } = await webSearchService.generateQueries(latestUserMessage.content as string);
@@ -61,7 +61,7 @@ app.post('/api/chat', async (req, res) => {
         const scrapedContent = await webSearchService.scrapeUrls(urlsToLoad);
         mergedResults = filteredResults.map(result => {
           const scrapedItem = scrapedContent.find(item => item.url === result.url);
-          return scrapedItem 
+          return scrapedItem
             ? { ...result, content: scrapedItem.content }
             : result;
         });

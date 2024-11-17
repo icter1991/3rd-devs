@@ -5,7 +5,7 @@ export default defineConfig({
   root: path.resolve(__dirname, 'voice-frontend'),
   server: {
     proxy: {
-      '/api': 'http://localhost:3000'
+      '/api': 'http://localhost:4000'
     }
   },
   build: {
